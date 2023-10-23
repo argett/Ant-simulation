@@ -75,6 +75,9 @@ public static class Grid
         }
     }
 
+    /**
+     * Check the 8 squares around the ant + the one where the ant is
+     **/
     public static List<GameObject> getFoodPheromonesAround(GameObject ant)
     {
         List<GameObject> pheromonesAround = new List<GameObject>();

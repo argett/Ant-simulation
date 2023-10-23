@@ -36,9 +36,19 @@ public class Pheromone : MonoBehaviour
             this.lifeDuration -= (this.lifeUpdate + delay);
             yield return new WaitForSeconds(this.lifeUpdate + delay);
         }
-        Simulation.pheromonesWaiting.Enqueue(this.gameObject);      // the pheromone is "dead"
+        Simulation.pheromonesWaiting.Enqueue(this.gameObject);  // the pheromone is "dead"
         Simulation.pheromonesActivated.Remove(this.gameObject); // remove it from the "alive" list
         Grid.removePherotoGrid(this.gameObject);                // dont forget to remove it from the grid -_-'
+    }
+
+    public float simulateDecrease()
+    {
+        return this.lifeDuration - Time.deltaTime;
+    }
+
+    public void decreaseLife()
+    {
+        this.lifeDuration -= Time.deltaTime;
     }
 
     /**
@@ -50,7 +60,7 @@ public class Pheromone : MonoBehaviour
         this.type = true;
         this.GetComponent<SpriteRenderer>().color = green;
         Grid.addPherotoFood(this.gameObject);
-        StartCoroutine(updatePheromones());
+        //StartCoroutine(updatePheromones());
     }
 
     /**
@@ -62,7 +72,7 @@ public class Pheromone : MonoBehaviour
         this.type = false;
         this.GetComponent<SpriteRenderer>().color = blue;
         Grid.addPherotoBase(this.gameObject);
-        StartCoroutine(updatePheromones());
+        //StartCoroutine(updatePheromones());
     }
 
     private void resetState(Vector2 position)

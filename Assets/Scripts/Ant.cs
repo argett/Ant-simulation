@@ -24,24 +24,23 @@ public class Ant : MonoBehaviour
     private void Awake()
     {
         this.fourmilliere = GameObject.FindGameObjectWithTag("Respawn");
-        this.transform.position = fourmilliere.transform.position;
-        this.gotoBase = false;
-        this.bounds = Simulation.bounds;
         this.sensor = this.transform.Find("tete").gameObject; // no need to get both sensors
         this.food = null;
+        this.gotoBase = false;
+        this.bounds = Simulation.bounds + new Vector2(0.3f, 0.3f); // a little bit of offset
+        this.momentum = Vector2.zero;
+        this.deviation = Random.insideUnitCircle;
+        this.acceleration = Random.insideUnitCircle;
+        this.transform.position = fourmilliere.transform.position;
+        this.rotationMatrix[0] = Mathf.Cos(this.turnAngle * Mathf.Deg2Rad);
+        this.rotationMatrix[1] = Mathf.Sin(this.turnAngle * Mathf.Deg2Rad);
+        this.rotationMatrix[2] = Mathf.Cos(-this.turnAngle * Mathf.Deg2Rad);
+        this.rotationMatrix[3] = Mathf.Sin(-this.turnAngle * Mathf.Deg2Rad);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        this.momentum = Vector2.zero;
-        this.deviation = Random.insideUnitCircle;
-        this.acceleration = Random.insideUnitCircle;
-        this.rotationMatrix[0] = Mathf.Cos(this.turnAngle * Mathf.Deg2Rad);
-        this.rotationMatrix[1] = Mathf.Sin(this.turnAngle * Mathf.Deg2Rad);
-        this.rotationMatrix[2] = Mathf.Cos(-this.turnAngle * Mathf.Deg2Rad);
-        this.rotationMatrix[3] = Mathf.Sin(-this.turnAngle * Mathf.Deg2Rad);
-
         StartCoroutine(dropPheromones());
     }
 
@@ -202,25 +201,25 @@ public class Ant : MonoBehaviour
         {
             this.deviation.x = -1;
             this.acceleration.x = -1;
-            position.x = this.bounds.x - 0.2f;
+            position.x = this.bounds.x;
         }
         else if (position.y > this.bounds.y)
         {
             this.deviation.y = -1;
             this.acceleration.y = -1;
-            position.y = this.bounds.y - 0.2f;
+            position.y = this.bounds.y;
         }
         else if (position.x < -this.bounds.x)
         {
             this.deviation.x = 1;
             this.acceleration.x = 1;
-            position.x = -this.bounds.x + 0.22f;
+            position.x = -this.bounds.x;
         }
         else if (position.y < -this.bounds.y)
         {
             this.deviation.y = 1;
             this.acceleration.y = 1;
-            position.y = -this.bounds.y + 0.2f;
+            position.y = -this.bounds.y;
         }
 
         return position;

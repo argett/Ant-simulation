@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Simulation : MonoBehaviour
 {
+    [Header("Simulation is the script that instantiate and controls everything")]
     public int nbAnts;
     public int nbFood;
 
@@ -72,11 +73,26 @@ public class Simulation : MonoBehaviour
     }
 
     // Update is called once per frame
-    /*
     void Update()
     {
+        /*
         (int x, int y) = Grid.wold2gridPos(ants[0].transform.position);
         square.transform.position = Grid.grid2worldPos(new Vector2 (x, y));
+        */
+        if (pheromonesActivated[0].GetComponent<Pheromone>().simulateDecrease() < 0f)
+        {
+            for (int i = 0; i < nbAnts; i++)
+            {
+                GameObject pheromone = Simulation.pheromonesActivated[0];
+                Simulation.pheromonesWaiting.Enqueue(pheromone);    // the pheromone is "dead"
+                Simulation.pheromonesActivated.Remove(pheromone);   // remove it from the "alive" list
+                Grid.removePherotoGrid(pheromone);                  // dont forget to remove it from the grid -_-'
+            }
+        }
+
+        foreach (GameObject pheromone in pheromonesActivated)
+        {
+            pheromone.GetComponent<Pheromone>().decreaseLife();
+        }
     }
-    */
 }
